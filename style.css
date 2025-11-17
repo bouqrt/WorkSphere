@@ -1,4 +1,123 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+body {
+  background-color: #f4e1e0;
+}
+header {
+  background: #ffffff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #7f6269;
+}
+header h1 {
+  color:#0E1627;
+  font-size: 28px;
+  font-weight: bold;
+}
 
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+}
+.unassigned-staff {
+  background: #7f6269;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow-y: auto
+}
+.ajout {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #0E1627;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.building-floor {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 20px;
+}
+.building-floor h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #0E1627;
+}
+.zone-content {
+  margin-top: 10px;
+}
+.conference-room {
+  background: #E5C5C1;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  min-height: 150px;
+  position: relative;
+}
+.reception {
+  background: #E5C5C1;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  min-height: 150px;
+  position: relative;
+}
+.server-room {
+  background: #E5C5C1;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  min-height: 150px;
+  position: relative;
+}
+.security-room {
+  background: #E5C5C1;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  min-height: 150px;
+  position: relative;
+}
+.staff-room {
+  background: #E5C5C1;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  min-height: 150px;
+  position: relative;
+}
+.archive-room {
+  background: #E5C5C1;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  min-height: 150px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .building-floor {
+    grid-template-columns: 1fr;
+  }
+}
 
 
 
