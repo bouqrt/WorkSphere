@@ -37,88 +37,96 @@
       <div class="conference-room">
         <h3> Conference Room </h3>
         <div class="zone-content"> 
-          <button class="add"> + </button>
+          <button class="add"> ➕ </button>
         </div>
       </div>
       <div class="reception">
         <h3> Reception </h3>
         <div class="zone-content"> 
-          <button class="add"> + </button>
+          <button class="add"> ➕ </button>
         </div>
       </div>
       <div class="server-room">
         <h3> Server Room </h3>
         <div class="zone-content"> 
-          <button class="add"> + </button>
+          <button class="add"> ➕ </button>
         </div>
       </div>
       <div class="security-room">
         <h3> Security Room </h3>
         <div class="zone-content"> 
-          <button class="add"> + </button>
+          <button class="add"> ➕ </button>
         </div>
       </div>
       <div class="staff-room">
         <h3> Staff Room </h3>
         <div class="zone-content"> 
-          <button class="add"> + </button>
+          <button class="add"> ➕ </button>
         </div>
       </div>
       <div class="archive-room">
         <h3> Archive Room </h3>
         <div class="zone-content"> 
-          <button class="add"> + </button>
+          <button class="add"> ➕ </button>
         </div>
       </div>
     </div>
   </main>
   <footer></footer> 
   <script>
-    // References to HTML elements
-    const addButton = document.getElementById("addstaffBtn");
-    const staffForm = document.getElementById("addstaffform");
-    const staffListContainer = document.getElementById("unassignedStaffList");
-    const nameInput = document.getElementById("staffName");
-    const positionInput = document.getElementById("staffPosition");
-    const emailInput = document.getElementById("staffEmail");
+  const addButton = document.getElementById("addstaffBtn");
+  const staffForm = document.getElementById("addstaffform");
+  const staffListContainer = document.getElementById("unassignedStaffList");
+  const nameInput = document.getElementById("staffName");
+  const positionInput = document.getElementById("staffPosition");
+  const emailInput = document.getElementById("staffEmail");
 
-    // 1. Show the form when the button is clicked
-    addButton.addEventListener("click", () => {
-      staffForm.style.display = "block";
-    });
+  // --- 0. Load existing staff on page load ---
+  let staffArray = JSON.parse(localStorage.getItem("staffList")) || [];
+  staffArray.forEach(staff => {
+    addStaffMemberToList(staff.name, staff.position, staff.email);
+  });
 
-    // 2. Handle the form submission
-    staffForm.addEventListener("submit", function(event) {
-      event.preventDefault(); // Prevents the page from reloading
+  // 1. Show form
+  addButton.addEventListener("click", () => {
+    staffForm.style.display = "block";
+  });
 
-      const name = nameInput.value;
-      const position = positionInput.value;
-      const email = emailInput.value;
+  // 2. Handle form submit
+  staffForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
-      if (name && position && email) {
-        addStaffMemberToList(name, position, email);
-        staffForm.reset();         // Clear the form fields
-        staffForm.style.display = "none"; // Hide the form again
-      } else {
-        alert("Please fill in all fields.");
-      }
-    });
+    const name = nameInput.value;
+    const position = positionInput.value;
+    const email = emailInput.value;
 
-    // 3. Function to create the staff member element and add it to the list
-    function addStaffMemberToList(name, position, email) {
-      const staffDiv = document.createElement("div");
-      staffDiv.classList.add("staff-member-card"); // Add a class for styling
+    if (name && position && email) {
+      addStaffMemberToList(name, position, email);
 
-      staffDiv.innerHTML = `
-        <h4>${name}</h4>
-        <p>Position: ${position}</p>
-        <p>Email: ${email}</p>
-      `;
-      // You could also add drag-and-drop attributes here if needed later
+      // --- Save to localStorage ---
+      staffArray.push({ name, position, email });
+      localStorage.setItem("staffList", JSON.stringify(staffArray));
 
-      staffListContainer.appendChild(staffDiv);
+      staffForm.reset();
+      staffForm.style.display = "none";
+    } else {
+      alert("Please fill in all fields.");
     }
+  });
 
-  </script>
+  // 3. Add staff card to the UI
+  function addStaffMemberToList(name, position, email) {
+    const staffDiv = document.createElement("div");
+    staffDiv.classList.add("staff-member-card");
+
+    staffDiv.innerHTML = `
+      <h4>${name}</h4>
+      <p>Position: ${position}</p>
+      <p>Email: ${email}</p>
+    `;
+
+    staffListContainer.appendChild(staffDiv);
+  }
+</script>
 </body>
 </html>
