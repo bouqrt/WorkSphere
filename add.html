@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> WorkSphere </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body> 
+  <header>
+    <h1> WorkSphere - Staff Managemence Space </h1>
+  </header>
+  <main class="container">
+    <!-- la partie gauche qui contient les emplyées non assignés -->
+    <div class="unassigned-staff">
+
+      <button id="addstaffBtn" class="addstaff"> Add New Staff </button>
+      <form id="addstaffform" style="display: none;">
+        <h3>Add a New Staff Member</h3>
+        <label>Name:</label>
+        <input type="text" placeholder="Enter full name">
+        <label>Position:</label>
+        <input type="text" placeholder="Enter position">
+        <label>Email:</label>
+        <input type="email" placeholder="Enter email">
+        <button type="submit">Save</button>
+      </form>
+
+    </div>
+    <!-- la partie droite containing the 6 boxes of the floors -->
+    <div class="building-floor">
+      <div class="conference-room">
+        <h3> Conference Room </h3>
+        <div class="zone-content"> </div>
+      </div>
+      <div class="reception">
+        <h3> Reception </h3>
+        <div class="zone-content"> </div>
+      </div>
+      <div class="server-room">
+        <h3> Server Room </h3>
+        <div class="zone-content"> </div>
+      </div>
+      <div class="security-room">
+        <h3> Security Room </h3>
+        <div class="zone-content"> </div>
+      </div>
+      <div class="staff-room">
+        <h3> Staff Room </h3>
+        <div class="zone-content"> </div>
+      </div>
+      <div class="archive-room">
+        <h3> Archive Room </h3>
+        <div class="zone-content"> </div>
+      </div>
+
+    </div>
+
+  </main>
+  <footer>
+
+  </footer> 
+  <script>
+  const btn = document.getElementById("addstaffBtn");
+  const form = document.getElementById("addstaffform");
+
+  btn.addEventListener("click", () => {
+    form.style.display = "block";   // Show the form
+  });
+</script>
+</body>
+</html>
