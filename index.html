@@ -13,12 +13,27 @@
   <main class="container">
     <!-- la partie gauche qui contient les emplyées non assignés -->
     <div class="unassigned-staff">
-
-      <button class="ajout"> Add New Staff </button>
-
+      <!-- **FIXED: Added id="addstaffBtn"** -->
+      <button id="addstaffBtn" class="addstaff"> Add New Staff </button>
+      <form id="addstaffform" style="display: none;">
+        <h3>Add a New Staff Member</h3>
+        <label>Name:</label>
+        <!-- **FIXED: Added IDs to inputs for easy access in JS** -->
+        <input type="text" id="staffName" placeholder="Enter full name">
+        <label>Position:</label>
+        <input type="text" id="staffPosition" placeholder="Enter position">
+        <label>Email:</label>
+        <input type="email" id="staffEmail" placeholder="Enter email">
+        <button type="submit">Save</button>
+      </form>
+      <!-- Added a container to list the staff members -->
+      <div id="unassignedStaffList">
+        <!-- Staff members will be added here dynamically -->
+      </div>
     </div>
     <!-- la partie droite containing the 6 boxes of the floors -->
     <div class="building-floor">
+      <!-- ... (rest of the building divs) ... -->
       <div class="conference-room">
         <h3> Conference Room </h3>
         <div class="zone-content"> </div>
@@ -43,12 +58,54 @@
         <h3> Archive Room </h3>
         <div class="zone-content"> </div>
       </div>
-
     </div>
-
   </main>
-  <footer>
+  <footer></footer> 
+  <script>
+    // References to HTML elements
+    const addButton = document.getElementById("addstaffBtn");
+    const staffForm = document.getElementById("addstaffform");
+    const staffListContainer = document.getElementById("unassignedStaffList");
+    const nameInput = document.getElementById("staffName");
+    const positionInput = document.getElementById("staffPosition");
+    const emailInput = document.getElementById("staffEmail");
 
-  </footer> 
+    // 1. Show the form when the button is clicked
+    addButton.addEventListener("click", () => {
+      staffForm.style.display = "block";
+    });
+
+    // 2. Handle the form submission
+    staffForm.addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevents the page from reloading
+
+      const name = nameInput.value;
+      const position = positionInput.value;
+      const email = emailInput.value;
+
+      if (name && position && email) {
+        addStaffMemberToList(name, position, email);
+        staffForm.reset();         // Clear the form fields
+        staffForm.style.display = "none"; // Hide the form again
+      } else {
+        alert("Please fill in all fields.");
+      }
+    });
+
+    // 3. Function to create the staff member element and add it to the list
+    function addStaffMemberToList(name, position, email) {
+      const staffDiv = document.createElement("div");
+      staffDiv.classList.add("staff-member-card"); // Add a class for styling
+
+      staffDiv.innerHTML = `
+        <h4>${name}</h4>
+        <p>Position: ${position}</p>
+        <p>Email: ${email}</p>
+      `;
+      // You could also add drag-and-drop attributes here if needed later
+
+      staffListContainer.appendChild(staffDiv);
+    }
+  </script>
 </body>
 </html>
