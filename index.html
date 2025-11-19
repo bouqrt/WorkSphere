@@ -17,14 +17,38 @@
       <button id="addstaffBtn" class="addstaff"> Add New Staff </button>
       <form id="addstaffform" style="display: none;">
         <h3>Add a New Staff Member</h3>
-        <label>Name:</label>
-        <!-- **FIXED: Added IDs to inputs for easy access in JS** -->
-        <input type="text" id="staffName" placeholder="Enter full name">
-        <label>Position:</label>
-        <input type="text" id="staffPosition" placeholder="Enter position">
-        <label>Email:</label>
-        <input type="email" id="staffEmail" placeholder="Enter email">
-        <button type="submit">Save</button>
+        <label>
+            Full Name
+            <input type="text" placeholder="El Qartit Bouchra" >
+        </label>
+
+        <label class="role-label">
+            Occupation
+            <select name="role" required>
+                <option value="">-- choose --</option>
+                <option> Receptionist </option>
+                <option> IT TECH </option>
+                <option> Security Agents </option>
+                <option> Manager </option>
+                <option> Cleaning Staff </option>
+                <option> Other </option>
+            </select>
+        </label>
+        <label>
+            Phone Number:
+            <input type="tel" placeholder="0625883148" required>
+        </label>
+
+        <label>
+            Mail:
+            <input type="email" placeholder="gmail.com">
+        </label>
+
+        <label>
+            Picture:
+            <input type="url" placeholder="image">
+        </label>
+        <button class="button-ajouter" type="submit">Ajouter</button>
       </form>
       <!-- Added a container to list the staff members -->
       <div id="unassignedStaffList">
@@ -72,7 +96,9 @@
       </div>
     </div>
   </main>
-  <footer></footer> 
+  <footer>
+
+  </footer> 
   <script>
   const addButton = document.getElementById("addstaffBtn");
   const staffForm = document.getElementById("addstaffform");
