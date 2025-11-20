@@ -49,11 +49,9 @@ header h1 {
   width: 90%;
   max-width: 450px;
   margin: 20px auto;
-
   display: flex;
   flex-direction: column;
   gap: 15px;
-
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   animation: fadeIn 0.3s ease;
 }
@@ -122,6 +120,41 @@ header h1 {
   border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
+}
+.staff-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 2px solid #0E1627;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+
+.popup div {
+  margin-top: 10px;
+}
+.popup .staff-option {
+  padding: 10px;
+  background: #7f6269;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.popup .staff-option:hover {
+  background:#0E1627;
 }
 .building-floor {
   display: grid;

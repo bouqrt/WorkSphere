@@ -46,13 +46,20 @@
 
         <label>
             Picture:
-            <input type="url" placeholder="image">
+            <input id="staffimage" type="url" placeholder="image">
         </label>
         <button class="button-ajouter" type="submit">Ajouter</button>
       </form>
       <!-- Added a container to list the staff members -->
       <div id="unassignedStaffList">
         <!-- Staff members will be added here dynamically -->
+      </div>
+      <div id="unassignedStaffList">
+        <p id="noStaffMsg">No staff available</p>
+      </div>
+      <div id="assignPopup" class="popup" style="display:none;">
+        <h3>Select a staff member</h3>
+        <div id="popupStaffList"></div>
       </div>
     </div>
     <!-- la partie droite containing the 6 boxes of the floors -->
@@ -61,37 +68,37 @@
       <div class="conference-room">
         <h3> Conference Room </h3>
         <div class="zone-content"> 
-          <button class="add"> ➕ </button>
+          <button class="add" data-room="conference-room"> ➕ </button>
         </div>
       </div>
       <div class="reception">
         <h3> Reception </h3>
         <div class="zone-content"> 
-          <button class="add"> ➕ </button>
+          <button class="add" data-room="reception"> ➕ </button>
         </div>
       </div>
       <div class="server-room">
         <h3> Server Room </h3>
         <div class="zone-content"> 
-          <button class="add"> ➕ </button>
+          <button class="add" data-room="server-room"> ➕ </button>
         </div>
       </div>
       <div class="security-room">
         <h3> Security Room </h3>
         <div class="zone-content"> 
-          <button class="add"> ➕ </button>
+          <button class="add" data-room="security-room"> ➕ </button>
         </div>
       </div>
       <div class="staff-room">
         <h3> Staff Room </h3>
         <div class="zone-content"> 
-          <button class="add"> ➕ </button>
+          <button class="add" data-room="staff-room"> ➕ </button>
         </div>
       </div>
       <div class="archive-room">
         <h3> Archive Room </h3>
         <div class="zone-content"> 
-          <button class="add"> ➕ </button>
+          <button class="add" data-room="archive-room"> ➕ </button>
         </div>
       </div>
     </div>
@@ -100,59 +107,103 @@
 
   </footer> 
   <script>
-  const addButton = document.getElementById("addstaffBtn");
-  const staffForm = document.getElementById("addstaffform");
-  const staffListContainer = document.getElementById("unassignedStaffList");
-  const nameInput = document.getElementById("staffName");
-  const positionInput = document.getElementById("staffPosition");
-  const emailInput = document.getElementById("staffEmail");
+    const addButton = document.getElementById("addstaffBtn");
+    const staffForm = document.getElementById("addstaffform");
+    const staffListContainer = document.getElementById("unassignedStaffList");
 
-  // --- 0. Load existing staff on page load ---
-  let staffArray = JSON.parse(localStorage.getItem("staffList")) || [];
-  staffArray.forEach(staff => {
-    addStaffMemberToList(staff.name, staff.position, staff.email);
-  });
+    // Select ALL new form fields (since they have no IDs anymore)
+    const nameInput = staffForm.querySelector("input[type='text']");
+    const roleInput = staffForm.querySelector("select[name='role']");
+    const phoneInput = staffForm.querySelector("input[type='tel']");
+    const emailInput = staffForm.querySelector("input[type='email']");
+    const photoInput = staffForm.querySelector("input[type='url']");
 
-  // 1. Show form
-  addButton.addEventListener("click", () => {
-    staffForm.style.display = "block";
-  });
+    // 1. Show the form
+    addButton.addEventListener("click", () => {
+        staffForm.style.display = "block";
+    });
 
-  // 2. Handle form submit
-  staffForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+    // 2. Save on submit
+    staffForm.addEventListener("submit", event => {
+        event.preventDefault();
 
-    const name = nameInput.value;
-    const position = positionInput.value;
-    const email = emailInput.value;
+        const name = nameInput.value.trim();
+        const role = roleInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const email = emailInput.value.trim();
+        const photo = photoInput.value.trim();
 
-    if (name && position && email) {
-      addStaffMemberToList(name, position, email);
+        if (!name || !role || !phone || !email) {
+            alert("Please fill in all required fields.");
+            return;
+        }
 
-      // --- Save to localStorage ---
-      staffArray.push({ name, position, email });
-      localStorage.setItem("staffList", JSON.stringify(staffArray));
+        addStaffMemberToList(name, role, phone, email, photo);
 
-      staffForm.reset();
-      staffForm.style.display = "none";
-    } else {
-      alert("Please fill in all fields.");
+        staffForm.reset();
+        staffForm.style.display = "none";
+    });
+
+    // 3. Add the worker card
+    function addStaffMemberToList(name, role, phone, email, photo) {
+        const staffDiv = document.createElement("div");
+        staffDiv.classList.add("staff-member-card");
+
+        staffDiv.innerHTML = `
+            <img src="${photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" 
+                 class="staff-photo">
+
+            <h4>${name}</h4>
+            <p><strong>Role:</strong> ${role}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            <p><strong>Email:</strong> ${email}</p>
+        `;
+
+        staffListContainer.appendChild(staffDiv);
     }
-  });
+    // --- POPUP ELEMENTS ---
+const assignPopup = document.getElementById("assignPopup");
+const popupStaffList = document.getElementById("popupStaffList");
 
-  // 3. Add staff card to the UI
-  function addStaffMemberToList(name, position, email) {
-    const staffDiv = document.createElement("div");
-    staffDiv.classList.add("staff-member-card");
+// 1. When clicking ➕ -> show popup with staff list
+document.querySelectorAll(".add").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const room = btn.dataset.room; // which room button clicked
+        openAssignPopup(room);
+    });
+});
 
-    staffDiv.innerHTML = `
-      <h4>${name}</h4>
-      <p>Position: ${position}</p>
-      <p>Email: ${email}</p>
-    `;
+// 2. Open popup and show unassigned staff choices
+function openAssignPopup(roomName) {
+    popupStaffList.innerHTML = ""; // clear old list
 
-    staffListContainer.appendChild(staffDiv);
-  }
+    const staffCards = Array.from(staffListContainer.querySelectorAll(".staff-member-card"));
+
+    if (staffCards.length === 0) {
+        popupStaffList.innerHTML = "<p>No staff available</p>";
+    }
+
+    staffCards.forEach(card => {
+        const option = document.createElement("div");
+        option.classList.add("staff-option");
+        option.textContent = card.querySelector("h4").textContent;
+
+        option.addEventListener("click", () => {
+            assignStaffToRoom(card, roomName);
+            assignPopup.style.display = "none";
+        });
+
+        popupStaffList.appendChild(option);
+    });
+
+    assignPopup.style.display = "block";
+}
+
+// 3. Move selected staff to the room
+function assignStaffToRoom(staffCard, roomName) {
+    const roomDiv = document.querySelector(`.${roomName} .zone-content`);
+    roomDiv.appendChild(staffCard);
+}
 </script>
 </body>
 </html>
