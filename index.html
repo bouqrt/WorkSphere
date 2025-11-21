@@ -35,6 +35,10 @@
             </select>
         </label>
         <label>
+            Experience
+            <input type="text" placeholder="1 year " >
+        </label>
+        <label>
             Phone Number:
             <input type="tel" placeholder="0625883148" required>
         </label>
@@ -203,6 +207,11 @@ function openAssignPopup(roomName) {
 function assignStaffToRoom(staffCard, roomName) {
     const roomDiv = document.querySelector(`.${roomName} .zone-content`);
     roomDiv.appendChild(staffCard);
+}
+
+function updateNoStaffMessage() {
+    const hasStaff = staffListContainer.querySelectorAll(".staff-member-card").length > 0;
+    document.getElementById("noStaffMsg").style.display = hasStaff ? "none" : "block";
 }
 </script>
 </body>
